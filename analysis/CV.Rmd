@@ -1,0 +1,14 @@
+---
+title: "CV"
+author: "Aleksander Marszewski"
+date: "2026-11-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is a CV document template for educational purposes.

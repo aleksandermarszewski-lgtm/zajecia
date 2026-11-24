@@ -1,0 +1,87 @@
+---
+title: "Analiza rozmiarów diamentów"
+author: "Aleksander Marszewski"
+output:
+  html_document:
+    toc: true
+    df_print: paged
+  html_notebook:
+    toc: true
+    toc_float: true
+    theme: journal
+    self_contained: true
+  pdf_document:
+    toc: true
+bibliography:
+  - packages.bib
+---
+
+```{r setup, include = FALSE}
+library(ggplot2)
+library(dplyr)
+library(knitr)
+
+# Ustawienie opcji globalnej – ukrywanie kodu we wszystkich chunkach
+knitr::opts_chunk$set(echo = FALSE)
+knitr::write_bib(c(.packages(), "bookdown"), file = "packages.bib")
+
+smaller <- diamonds %>% 
+  filter(carat <= 2.5)
+```
+
+Mamy dane na temat `r nrow(diamonds)` diamentów. Tylko `r nrow(diamonds) - nrow(smaller)` diamentów jest większych od 2.5 karatów. Poniżej rozkład:
+
+```{r wykres1, echo = FALSE}
+smaller %>% 
+  ggplot(aes(carat)) + 
+  geom_freqpoly(binwidth = 0.01)
+```
+
+Poniższy wykres przedstawia zróżnicowanie wielkości diamentów (wyrażonej w karatach) w zależności od ich szlifu (cut) oraz koloru (color).
+
+```{r wykres2, echo = FALSE}
+diamonds %>% 
+  ggplot(aes(x = cut, y = carat, fill = color)) +
+  geom_boxplot() +
+  labs(
+    title = "Wielkość diamentów według szlifu i koloru",
+    x = "Szlif",
+    y = "Karat"
+  )
+```
+
+Poniżej przedstawiono tabelę zawierającą najważniejsze atrybuty 20 największych diamentów w zbiorze danych.
+
+```{r top_diamenty, echo = FALSE}
+top_diamenty <- diamonds %>% 
+  arrange(desc(carat)) %>% 
+  head(20)
+
+kable(top_diamenty)
+```
+
+Średnia wielkość największych diamentów wynosi `r mean(top_diamenty$carat)` karatów.
+
+```{r wykres_top, echo = FALSE}
+srednia_cena_val <- mean(top_diamenty$price)
+liczba_top <- nrow(top_diamenty)
+
+liczba_kat <- top_diamenty %>% 
+  count(cut)
+
+ggplot(liczba_kat, aes(x = cut, y = n, fill = cut)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Liczba top diamentów w poszczególnych kategoriach szlifu",
+    x = "Szlif",
+    y = "Liczba diamentów",
+    caption = paste("średnia cena dla", liczba_top, "największych diamentów wynosi", round(srednia_cena_val, 2), "USD")
+  )
+```
+
+---
+
+Jak podaje @R-ggplot2, każdy wykres ma być czytelny.
+
+
+# Bibliografia

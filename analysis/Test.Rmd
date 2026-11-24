@@ -1,0 +1,24 @@
+---
+title: "Raport"
+author: "Aleksander Marszewski"
+date: "2026-11-17"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*kursywa*\
+
+**pogruuubione**\
+
+`ale kodzik mhm`\
+
+---
+
+> Cytat blokowy\
+
+equation: $e^(i\pi)+1=0$\
